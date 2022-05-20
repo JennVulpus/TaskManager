@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+        <h2>Manage {{list.name}}  (Group Code: {{list.group_code}})</h2>
+        <a class="btn btn-primary" href='{% url "create_chore" %}'>Create Chore</a>
+        <a class="btn btn-primary" href='{% url "create_location" %}'>Create Location</a>
+        <a class="btn btn-primary" href='{% url "history" %}'>History</a>
+        <div class='container-fluid'>
+            <h4>Locations:</h4>
+                {% for loc in location %}
+                    <a class='btn btn-secondary' href='{% url "edit_location" loc.id %}'>{{loc.name}}</a>
+                    <br>
+                {% endfor %}
+        </div>
+{% endblock %}

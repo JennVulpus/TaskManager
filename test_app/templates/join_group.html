@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+        <h2>Join a List</h2>
+        
+        <form action='/group_test' method=POST>
+            {% csrf_token %}
+            <label for='name'>List Code:</label>
+            <input type='text' name='code'><br>
+            <button class="btn btn-success" type='sumbit'>Submit</button>
+            <a class="btn btn-danger" href='{% url "lists" %}'>Back</a>
+        </form>
+{% endblock %}

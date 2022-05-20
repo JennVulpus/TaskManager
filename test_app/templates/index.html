@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load custom_template_tags %}
+{% block content %}
+<div id=location_sort>
+    <a class="btn btn-primary" href='{% url "location_index" %}'>Sort by Location</a>
+    <a class="btn btn-primary" href='{% url "manage" %}'>Manage Chore/Location</a>
+</div>
+
+    <div id=chore_list>
+        <h4>{{list.name}} List</h4>
+        <form action='{% url "finish_chore" %}' method='POST'>
+            {% csrf_token %}
+            <div class='accordion' id='chore_accordion'>
+            {% for chore in chores %}
+                {% if not chore.done_date %}
+                    {% if forloop.first or last_chore != chore.name %}
+                        {% setvar chore.name as last_chore %}
+                        <div class='accordion-item'>
+                            <h2 class='accordion-header' id='heading{{chore.name|slugify}}'>
+                                <button class='accordion-button' type='button' data-bs-toggle='collapse' data-bs-target='#collapse{{chore.name|slugify}}' aria-expanded="false" aria-controls='collapse{{chore.name|slugify}}'>
+                                    {{chore.name}}
+                                </button>
+                            </h2>
+                            <div id='collapse{{chore.name|slugify}}' class='accordion-collapse collapse' aria-labelledby="heading{{chore.name|slugify}}" data-bs-parent='#chore_accordion'>
+                                <div class='accordion-body'>
+                                    <table>
+                                        <tr>
+                                            <th>Location</th>
+                                            <th>Finished?</th>
+                                        </tr>
+                                        {% for chore in chores %}
+                                            {% if not chore.done_date and chore.name == last_chore %}
+                                                <tr>
+                                                    {% if not chore.location.name %}
+                                                        <td>N/A</td>
+                                                    {% else %}
+                                                        <td>{{chore.location.name}}</td>
+                                                    {% endif %}
+                                                    <td><input type="checkbox" name='chores' value='{{chore.id}}'></td>
+                                                </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+            </div>
+            <button class='btn btn-primary' type='submit'>Finish Chores</button>
+        </form>
+    </div>
+
+<!--
+    <h4>Done Tasks</h4>
+    <form action='{% url "unfinish_chore" %}' method='POST'>
+        <table class='table table-striped'>
+            <tr>
+                <th>Chore Name</th>
+                <th>Location</th>
+                <th>Renew Date</th>
+                <th>Actions</th>
+            </tr>
+            {% for chore in chores %}
+                {% if chore.done_date %}
+                <tr>
+                    <td><a href='{% url "edit_chore" chore.id %}'>{{chore.name}}</a></td>
+                    <td>{{chore.location.name}}</td>
+                    <td>{% if chore.renew_freq == 0%}Won't Renew
+                        {% else %}{{chore.renew_date}}
+                        {% endif %}</td>
+                    <td><input type="checkbox" name='chores' value='{{chore.id}}'></td>
+                </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+        <button type="submit">Unfinish</button>
+    </form>
+</div>
+-->
+{% endblock %}

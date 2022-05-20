@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<a class="btn btn-primary" href='/create_list' role="button">Create A New List</a>
+<a class="btn btn-primary" href='/join_group' role="'button">Join a List</a>
+<div>
+    <h2>Your Lists:</h2>
+    {% for list in owned_lists %}
+    <a class="btn btn-secondary" href='/select_list/{{list.id}}'>{{list.name}}</a>
+    <br>
+    {% endfor %}
+    {% if not owned_lists %}
+        <ul><h6>You don't have any lists</h6></ul>
+    {% endif %}
+</div>
+<br>
+<div>
+    <h2>Joined Lists:</h2>
+    {% for list in joined_lists %}
+    <a class="btn btn-secondary" href='/select_list/{{list.id}}'>{{list.name}}</a>
+    <br>
+    {% endfor %}
+    {% if not joined_lists %}
+        <ul><h6>You haven't joined any lists</h6></ul>
+    {% endif %}
+</div>
+<br>
+{% endblock %}

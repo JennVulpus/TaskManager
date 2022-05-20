@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+        <h2>Edit Chore</h2>
+        <form action='{% url "delete_chore" chore.id %}' method=POST>
+            {% csrf_token %}
+            <button class="btn btn-danger" type=sumbit>Delete Chore</button>
+        </form>
+        <form action='{% url "save_edited_chore" chore.id %}' method='POST'>
+            {% csrf_token %}
+            <label for='name'>Name:</label>
+            <input type='text' name='name' value={{chore.name}}>
+            <br>
+            <label for='number'>How many days until you want to renew this chore:</label>
+            <input type="number" name='number' value={{chore.renew_freq}}>
+            <br>
+            <label for='Location'>Location:
+            {{chore.location.name}}</label>
+            <br>
+            <button class="btn btn-success" type="sumbit">Save Changes</button>
+            <a class='btn btn-danger' href='/edit_location/{{chore.location.id}}'>Back</a>
+        </form>
+
+        <h3>History</h3>
+        <ul>
+            {% if not history %}
+                <p>You've never completed this chore</p>
+            {% else %}
+                {% for his in history %}
+                    <li>{{his.finished_at}}</li>
+                {% endfor %}
+            {% endif %}
+        </ul>
+{% endblock %}

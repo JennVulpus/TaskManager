@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h2>Create New List</h2>
+    <form action='/save_list' method=POST>
+        {% csrf_token %}
+        <label for='name'>List Name:</label>
+        <input type='text' name='name'><br>
+        <button class="btn btn-success" type='sumbit'>Submit</button>
+        <a class='btn btn-danger' href='{% url "lists" %}'>Back</a>
+    </form>
+{% endblock %}

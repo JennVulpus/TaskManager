@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block content %}
+        <div id=header>
+            <h2>Chore List</h2>
+        </div>
+        <div id=location>
+            <a href='/location'>Create/Edit/Delete Locations</a>
+        </div>
+        <div id=chore>
+            <a href='/create_chore'>Create New Chore</a>
+        </div>
+        <a href='/'>Sort by chore</a>
+        <div id=chore_list>
+            <h4>Chore List</h4>
+            <form action="/finish_chore" method='POST'>
+                {% csrf_token %}
+                <table class="table table-striped table-bordered">
+                    <tr>
+                        <th>Chore Name</th>
+                        <th>Location</th>
+                        <th>Finished?</th>
+                    </tr>
+                    {% for chore in chores %}
+                        {% if not chore.done_date %}
+                            <tr>
+                                <td><a href='/edit_chore/{{chore.id}}'>{{chore.name}}</a></td>
+                                <td>{{chore.location.name}}</td>
+                                <td><input type="checkbox" name='chores' value='{{chore.id}}'></td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </table>
+                <button type='submit'>Finish</button>
+            </form>
+            <h4>Done Chore List</h4>
+            <form action='/unfinish_chore' method='POST'>
+                <table class="table table-striped table-bordered">
+                    <tr>
+                        <th>Chore Name</th>
+                        <th>Location</th>
+                        <th>Renew Date</th>
+                        <th>Actions</th>
+                    </tr>
+                    {% for chore in chores %}
+                        {% if chore.done_date %}
+                        <tr>
+                            <td><a href='/edit_chore/{{chore.id}}'>{{chore.name}}</a></td>
+                            <td>{{chore.location.name}}</td>
+                            <td>{{chore.renew_date}}</td>
+                            <td><input type="checkbox" name='chores' value='{{chore.id}}'></td>
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                </table>
+                <button type="submit">Unfinish</button>
+            </form>
+        </div>
+{% endblock %}

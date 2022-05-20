@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block content %}
+        <h2>New Task</h2>
+        <form action='{% url "save_chore" %}' method='POST'>
+            {% csrf_token %}
+            <label for='name'>Name:</label>
+            <input type='text' name='name'>
+            <br>
+            <label for='number'>How many days until you want to renew this task:</label>
+            <input type="number" name='number'>
+            <br>
+            <label for='Location'>Location:</label><br>
+            {% for loc in location %}
+                <input type="checkbox" name='location' value='{{loc.name}}'> {{loc.name}}<br>
+            {%endfor%}
+            <br>
+            <button class='btn btn-success' type="sumbit">Submit</button>
+            <a class='btn btn-danger' href='/manage'>Back</a>
+        </form>
+{% endblock %}

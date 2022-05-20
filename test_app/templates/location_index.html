@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load custom_template_tags %}
+{% block content %}
+<div id=chore_sort>
+    <a href='{% url "index" %}'>Sort by Chore</a>
+</div>
+
+<div id=chore_list>
+    <h4>Chore List</h4>
+    <form action='{% url "finish_chore" %}' method='POST'>
+        {% csrf_token %}
+        <div class='accordion' id='location_accordion'>
+        {% for loc in location %}
+            {% for chore in loc.location.all %}
+                {% setvar "False" as test %}
+                {% if not chore.done_date and chore.location.name != last_loc %}
+                    {% setvar "True" as test %}
+                    {% setvar chore.location.name as last_loc %}
+                {% endif %}
+                {% if test == 'True' %}
+                    <div class='accordion-item'>
+                        <h2 class='accordion-header' id='heading{{loc.id}}'>
+                            <button class='accordion-button' type='button' data-bs-toggle='collapse' data-bs-target='#collapse{{loc.id}}' aria-expanded="false" aria-controls='collapse{{loc.id}}'>
+                                {{loc.name}}
+                            </button>
+                        </h2>
+                        <div id='collapse{{loc.id}}' class='accordion-collapse collapse' aria-labelledby="heading{{loc.id}}" data-bs-parent='#location_accordion'>
+                            <div class='accordion-body'>
+                                <table>
+                                    <tr>
+                                        <th>Chore</th>
+                                        <th>Finished?</th>
+                                    </tr>
+                                    {% for chore in loc.location.all %}
+                                        {% if not chore.done_date  %}
+                                            <tr>
+                                                <td>{{chore.name}}</td>
+                                                <td><input type="checkbox" name='chores' value='{{chore.id}}'></td>
+                                            </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+        </div>
+        <button type='submit'>Finish Chores</button>
+    </form>
+</div>
+{% endblock %}

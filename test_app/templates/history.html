@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<table class="table">
+    <thead>
+        <th scope="col">Chore Name</th>
+        <th scope="col">Location</th>
+        <th scope="col">User</th>
+        <th scope="col">Date</th>
+    </thead>
+    <tbody>
+        {% for his in history %}
+        <tr>
+            <td>{{his.chore.name}}</td>
+            <td>{{his.chore.location.name}}</td>
+            <td>{{his.user.name}}</td>
+            <td>{{his.finshed_at}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
